@@ -1,0 +1,43 @@
+:root {
+  /* Colors */
+  --primary:    #6C63FF;   /* Purple accent */
+  --secondary:  #F0EFFE;   /* Light purple bg */
+  --success:    #22C997;
+  --warning:    #F59E0B;
+  --danger:     #EF4444;
+  --text-main:  #1E1B4B;
+  --text-muted: #6B7280;
+  --bg:         #F8F7FF;
+  --card:       #FFFFFF;
+  --border:     #E5E7EB;
+  
+  /* UI Atoms */
+  --radius:     12px;
+  --radius-lg:  20px;
+  --shadow:     0 2px 12px rgba(108,99,255,0.08);
+  --shadow-lg:  0 10px 25px rgba(108,99,255,0.12);
+  
+  /* Sidebar */
+  --sidebar-width: 260px;
+  
+  /* Transitions */
+  --transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+[data-theme="dark"] {
+  --bg:        #0F0E1A;
+  --card:      #1A1830;
+  --border:    #2D2B4E;
+  --text-main: #E0DEFF;
+  --text-muted: #94A3B8;
+  --secondary: #252245;
+  --shadow:    0 4px 15px rgba(0,0,0,0.3);
+}
+
+/* Animations for View Transitions if supported */
+::view-transition-group(*),
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.25s;
+  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+}

@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subjects - Smart Study Planner</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body data-theme="light">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>StudyPlanner</span>
+        </div>
+        <nav class="nav-links">
+            <div class="nav-item">
+                <a href="../index.html" class="nav-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="subjects.html" class="nav-link active">
+                    <i class="fas fa-book"></i>
+                    <span>Subjects</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="planner.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Planner</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="timer.html" class="nav-link">
+                    <i class="fas fa-stopwatch"></i>
+                    <span>Timer</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="progress.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progress</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="greeting">
+                <h1>My Subjects</h1>
+                <p style="color: var(--text-muted);">Manage the topics you're focusing on.</p>
+            </div>
+            <button class="btn btn-primary" id="open-modal-btn">
+                <i class="fas fa-plus"></i> Add Subject
+            </button>
+        </header>
+
+        <!-- Subjects Grid -->
+        <div class="grid grid-3" id="subjects-grid">
+            <!-- Subjects will be rendered here -->
+        </div>
+
+        <!-- Add Subject Modal (Simple Overlay) -->
+        <div id="subject-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+            <div class="card" style="width: 100%; max-width: 400px; margin: 1rem;">
+                <h2 style="margin-bottom: 1.5rem;">Add New Subject</h2>
+                <form id="subject-form">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Subject Name</label>
+                        <input type="text" id="subject-name" required placeholder="e.g. Mathematics" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-main);">
+                    </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-size: 0.875rem; font-weight: 500; margin-bottom: 0.5rem;">Color Tag</label>
+                        <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                            <input type="radio" name="color" value="#6C63FF" checked id="c1" style="display: none;">
+                            <label for="c1" style="width: 24px; height: 24px; border-radius: 50%; background: #6C63FF; cursor: pointer; border: 2px solid transparent;"></label>
+                            
+                            <input type="radio" name="color" value="#22C997" id="c2" style="display: none;">
+                            <label for="c2" style="width: 24px; height: 24px; border-radius: 50%; background: #22C997; cursor: pointer; border: 2px solid transparent;"></label>
+                            
+                            <input type="radio" name="color" value="#F59E0B" id="c3" style="display: none;">
+                            <label for="c3" style="width: 24px; height: 24px; border-radius: 50%; background: #F59E0B; cursor: pointer; border: 2px solid transparent;"></label>
+                            
+                            <input type="radio" name="color" value="#EF4444" id="c4" style="display: none;">
+                            <label for="c4" style="width: 24px; height: 24px; border-radius: 50%; background: #EF4444; cursor: pointer; border: 2px solid transparent;"></label>
+                            
+                            <input type="radio" name="color" value="#EC4899" id="c5" style="display: none;">
+                            <label for="c5" style="width: 24px; height: 24px; border-radius: 50%; background: #EC4899; cursor: pointer; border: 2px solid transparent;"></label>
+                        </div>
+                    </div>
+                    <div style="display: flex; gap: 1rem; justify-content: flex-end;">
+                        <button type="button" class="btn btn-outline" id="close-modal-btn">Cancel</button>
+                        <button type="submit" class="btn btn-primary">Save Subject</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/storage.js"></script>
+    <script>
+        // Inline logic for subject management to keep JS files clean
+        document.addEventListener('DOMContentLoaded', () => {
+            // Apply theme
+            const savedTheme = localStorage.getItem('ssp_theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+
+            const grid = document.getElementById('subjects-grid');
+            const modal = document.getElementById('subject-modal');
+            const form = document.getElementById('subject-form');
+
+            const renderSubjects = () => {
+                const subjects = Storage.getSubjects();
+                if (subjects.length === 0) {
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; color: var(--text-muted); padding: 3rem;">No subjects added yet. Click the button above to start!</p>';
+                    return;
+                }
+                grid.innerHTML = subjects.map(s => `
+                    <div class="card" style="border-left: 6px solid ${s.color};">
+                        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
+                            <h3 style="font-weight: 700;">${s.name}</h3>
+                            <button onclick="deleteSub(${s.id})" style="background: none; border: none; color: var(--danger); cursor: pointer;">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <span class="badge" style="background: ${s.color}15; color: ${s.color}; border: 1px solid ${s.color}30;">Active</span>
+                        </div>
+                    </div>
+                `).join('');
+            };
+
+            window.deleteSub = (id) => {
+                if(confirm('Are you sure you want to delete this subject?')) {
+                    Storage.deleteSubject(id);
+                    renderSubjects();
+                }
+            };
+
+            document.getElementById('open-modal-btn').onclick = () => modal.style.display = 'flex';
+            document.getElementById('close-modal-btn').onclick = () => modal.style.display = 'none';
+
+            form.onsubmit = (e) => {
+                e.preventDefault();
+                const name = document.getElementById('subject-name').value;
+                const color = document.querySelector('input[name="color"]:checked').value;
+                Storage.addSubject({ name, color });
+                form.reset();
+                modal.style.display = 'none';
+                renderSubjects();
+            };
+
+            // Color selection UI feedback
+            document.querySelectorAll('input[name="color"]').forEach(radio => {
+                radio.addEventListener('change', (e) => {
+                    document.querySelectorAll('input[name="color"] + label').forEach(l => l.style.borderColor = 'transparent');
+                    e.target.nextElementSibling.style.borderColor = 'var(--text-main)';
+                });
+            });
+
+            renderSubjects();
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Knowledge Notes - Smart Study Planner</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+</head>
+<body data-theme="light">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>StudyPlanner</span>
+        </div>
+        <nav class="nav-links">
+            <div class="nav-item">
+                 <a href="../index.html" class="nav-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="subjects.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Subjects</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="planner.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Planner</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="timer.html" class="nav-link">
+                    <i class="fas fa-stopwatch"></i>
+                    <span>Timer</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="progress.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progress</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="greeting">
+                <h1>Study Notes</h1>
+                <p style="color: var(--text-muted);">Quick notes for quick recall.</p>
+            </div>
+            <button class="btn btn-primary" onclick="addNote()">
+                <i class="fas fa-sticky-note"></i> New Note
+            </button>
+        </header>
+
+        <div class="grid grid-3" id="notes-grid">
+            <div class="card" style="display: flex; flex-direction: column; gap: 1rem; border-top: 4px solid var(--primary);">
+                <h3 contenteditable="true">Quick Idea</h3>
+                <p contenteditable="true" style="font-size: 0.9rem; color: var(--text-muted); flex-grow: 1;">Click here to edit your note. Great for capturing thoughts during study breaks!</p>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Created: Just now</div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // Apply theme
+            const savedTheme = localStorage.getItem('ssp_theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+        });
+
+        function addNote() {
+            const grid = document.getElementById('notes-grid');
+            const note = document.createElement('div');
+            note.className = 'card';
+            note.style.display = 'flex';
+            note.style.flexDirection = 'column';
+            note.style.gap = '1rem';
+            note.style.borderTop = '4px solid #22C997';
+            note.innerHTML = `
+                <h3 contenteditable="true">New Note</h3>
+                <p contenteditable="true" style="font-size: 0.9rem; color: var(--text-muted); flex-grow: 1;">Start typing...</p>
+                <div style="font-size: 0.75rem; color: var(--text-muted);">Created: ${new Date().toLocaleDateString()}</div>
+            `;
+            grid.prepend(note);
+        }
+    </script>
+</body>
+</html>

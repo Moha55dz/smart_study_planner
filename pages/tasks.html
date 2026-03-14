@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tasks - Smart Study Planner</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .task-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            margin-bottom: 0.75rem;
+            transition: var(--transition);
+        }
+
+        .task-item:hover {
+            transform: translateX(4px);
+            border-color: var(--primary);
+        }
+
+        .task-item.completed {
+            opacity: 0.6;
+        }
+
+        .task-item.completed label {
+            text-decoration: line-through;
+            color: var(--text-muted);
+        }
+
+        .task-input-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            background: var(--card);
+            padding: 1rem;
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow);
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>StudyPlanner</span>
+        </div>
+        <nav class="nav-links">
+            <div class="nav-item">
+                 <a href="../index.html" class="nav-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="subjects.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Subjects</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="planner.html" class="nav-link">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Planner</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="timer.html" class="nav-link">
+                    <i class="fas fa-stopwatch"></i>
+                    <span>Timer</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="progress.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progress</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="greeting">
+                <h1>Task Management</h1>
+                <p style="color: var(--text-muted);">Stay on top of your assignments and to-dos.</p>
+            </div>
+        </header>
+
+        <div class="task-input-bar">
+            <input type="text" id="task-name" placeholder="What needs to be done?" style="flex: 1; border: none; background: transparent; font-size: 1rem; outline: none; color: var(--text-main);">
+            <select id="task-subject" style="padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-main); font-size: 0.8rem;">
+                <option value="">General</option>
+            </select>
+            <button class="btn btn-primary" id="add-task-btn">Add Task</button>
+        </div>
+
+        <div id="tasks-list">
+            <!-- Tasks injected here -->
+        </div>
+    </main>
+
+    <script src="../js/storage.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             // Apply theme
+            const savedTheme = localStorage.getItem('ssp_theme') || 'light';
+            document.body.setAttribute('data-theme', savedTheme);
+
+            loadSubjects();
+            renderTasks();
+
+            document.getElementById('add-task-btn').onclick = () => {
+                const name = document.getElementById('task-name').value;
+                const subjectId = document.getElementById('task-subject').value;
+                if (!name) return;
+
+                Storage.addTask({ name, subjectId });
+                document.getElementById('task-name').value = '';
+                renderTasks();
+            };
+        });
+
+        function loadSubjects() {
+            const subjects = Storage.getSubjects();
+            const select = document.getElementById('task-subject');
+            select.innerHTML += subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+        }
+
+        function renderTasks() {
+            const tasks = Storage.getTasks();
+            const container = document.getElementById('tasks-list');
+            const subjects = Storage.getSubjects();
+
+            if (tasks.length === 0) {
+                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem;">All clear! Time to relax or start a new task.</p>';
+                return;
+            }
+
+            container.innerHTML = tasks.slice().reverse().map(t => {
+                const sub = subjects.find(s => s.id == t.subjectId);
+                return `
+                    <div class="task-item ${t.completed ? 'completed' : ''}">
+                        <div class="checkbox ${t.completed ? 'checked' : ''}" onclick="toggleTask(${t.id})">
+                            ${t.completed ? '<i class="fas fa-check"></i>' : ''}
+                        </div>
+                        <div style="flex: 1;">
+                            <label style="font-weight: 600; cursor: pointer;" onclick="toggleTask(${t.id})">${t.name}</label>
+                            ${sub ? `<span style="font-size: 0.7rem; color: ${sub.color}; background: ${sub.color}15; padding: 2px 8px; border-radius: 100px; margin-left: 0.75rem;">${sub.name}</span>` : ''}
+                        </div>
+                        <button onclick="deleteTask(${t.id})" style="background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        window.toggleTask = (id) => {
+            const tasks = Storage.getTasks();
+            const task = tasks.find(t => t.id === id);
+            if (task) {
+                task.completed = !task.completed;
+                Storage.save(DB_KEYS.TASKS, tasks);
+                renderTasks();
+            }
+        };
+
+        window.deleteTask = (id) => {
+            const tasks = Storage.getTasks().filter(t => t.id !== id);
+            Storage.save(DB_KEYS.TASKS, tasks);
+            renderTasks();
+        };
+    </script>
+</body>
+</html>

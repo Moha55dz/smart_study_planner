@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weekly Planner - Smart Study Planner</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="../css/reset.css">
+    <link rel="stylesheet" href="../css/variables.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <style>
+        .planner-container {
+            overflow-x: auto;
+            background: var(--card);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            margin-top: 1rem;
+        }
+
+        .planner-grid {
+            display: grid;
+            grid-template-columns: 80px repeat(7, 1fr);
+            min-width: 800px;
+        }
+
+        .grid-header {
+            background: var(--secondary);
+            padding: 1rem;
+            text-align: center;
+            font-weight: 700;
+            border-bottom: 1px solid var(--border);
+            border-right: 1px solid var(--border);
+        }
+
+        .time-col {
+            background: var(--secondary);
+            padding: 0.5rem;
+            text-align: right;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .grid-cell {
+            border-right: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+            height: 60px;
+            transition: var(--transition);
+            cursor: pointer;
+            position: relative;
+        }
+
+        .grid-cell:hover {
+            background-color: var(--secondary);
+        }
+
+        .session-block {
+            position: absolute;
+            inset: 2px;
+            border-radius: 4px;
+            padding: 4px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: white;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .subject-selector {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            z-index: 2000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body data-theme="light">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+        <div class="logo">
+            <i class="fas fa-graduation-cap"></i>
+            <span>StudyPlanner</span>
+        </div>
+        <nav class="nav-links">
+            <div class="nav-item">
+                <a href="../index.html" class="nav-link">
+                    <i class="fas fa-th-large"></i>
+                    <span>Dashboard</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="subjects.html" class="nav-link">
+                    <i class="fas fa-book"></i>
+                    <span>Subjects</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="planner.html" class="nav-link active">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Planner</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="timer.html" class="nav-link">
+                    <i class="fas fa-stopwatch"></i>
+                    <span>Timer</span>
+                </a>
+            </div>
+            <div class="nav-item">
+                <a href="progress.html" class="nav-link">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Progress</span>
+                </a>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="header">
+            <div class="greeting">
+                <h1>Weekly Planner</h1>
+                <p style="color: var(--text-muted);">Schedule your study sessions for the week.</p>
+            </div>
+            <button class="btn btn-outline" onclick="clearPlanner()">
+                <i class="fas fa-eraser"></i> Clear Week
+            </button>
+        </header>
+
+        <div class="planner-container">
+            <div class="planner-grid" id="planner-grid">
+                <!-- Header row -->
+                <div class="grid-header" style="background: var(--card);">Time</div>
+                <div class="grid-header">Mon</div>
+                <div class="grid-header">Tue</div>
+                <div class="grid-header">Wed</div>
+                <div class="grid-header">Thu</div>
+                <div class="grid-header">Fri</div>
+                <div class="grid-header">Sat</div>
+                <div class="grid-header">Sun</div>
+                
+                <!-- Time slots will be injected by JS -->
+            </div>
+        </div>
+
+        <!-- Subject Selection Modal -->
+        <div id="subject-selector" class="subject-selector">
+            <div class="card" style="width: 100%; max-width: 350px;">
+                <h3 style="margin-bottom: 1rem;">Select Subject</h3>
+                <div id="subject-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto;">
+                    <!-- Subjects injected here -->
+                </div>
+                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                    <button class="btn btn-outline" style="flex: 1;" onclick="closeSelector()">Cancel</button>
+                    <button class="btn btn-danger" style="flex: 1;" onclick="removeSession()">Remove</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="../js/storage.js"></script>
+    <script src="../js/planner.js"></script>
+</body>
+</html>
