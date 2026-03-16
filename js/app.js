@@ -89,7 +89,7 @@ function updateDashboardStats() {
     // Populate Quick Tasks (Uncompleted)
     const taskList = document.getElementById('quick-tasks-list');
     if (taskList) {
-        const pending = tasks.filter(t => !t.completed).slice(0, 3);
+        const pending = tasks.filter(t => !t.completed);
         if (pending.length > 0) {
             taskList.innerHTML = pending.map(t => `
                 <div class="dashboard-task" style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; cursor: pointer; transition: 0.3s;" onclick="toggleTaskDashboard(${t.id}, this)">
