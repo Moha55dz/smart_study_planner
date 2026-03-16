@@ -130,6 +130,41 @@
     pointer-events: none;
 }
 
+.dashboard-task.completed span {
+    text-decoration: line-through;
+    color: var(--text-muted);
+}
+
+.btn-active {
+    background-color: var(--secondary) !important;
+    border-color: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+.dashboard-task {
+    position: relative;
+    padding-right: 2rem;
+}
+
+.delete-task-btn {
+    position: absolute;
+    right: 0.5rem;
+    padding: 0.25rem;
+    color: var(--text-muted);
+    opacity: 0;
+    transition: var(--transition);
+    cursor: pointer;
+    z-index: 5;
+}
+
+.dashboard-task:hover .delete-task-btn {
+    opacity: 1;
+}
+
+.delete-task-btn:hover {
+    color: var(--danger);
+}
+
 /* Grid Views */
 .grid {
     display: grid;

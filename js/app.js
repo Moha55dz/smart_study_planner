@@ -39,6 +39,8 @@ function updateThemeIcon(theme) {
     }
 }
 
+let showAllTasks = false;
+
 function updateDashboardStats() {
     const subjects = Storage.getSubjects();
     const tasks = Storage.getTasks();
@@ -86,42 +88,79 @@ function updateDashboardStats() {
         }
     }
 
-    // Populate Quick Tasks (Uncompleted)
+    // Populate Quick Tasks
     const taskList = document.getElementById('quick-tasks-list');
     if (taskList) {
-        const pending = tasks.filter(t => !t.completed);
-        if (pending.length > 0) {
-            taskList.innerHTML = pending.map(t => `
-                <div class="dashboard-task" style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; cursor: pointer; transition: 0.3s;" onclick="toggleTaskDashboard(${t.id}, this)">
-                    <div class="checkbox"></div>
-                    <span>${t.name}</span>
+        const filtered = showAllTasks ? tasks : tasks.filter(t => !t.completed);
+        if (filtered.length > 0) {
+            taskList.innerHTML = filtered.map(t => `
+                <div class="dashboard-task ${t.completed ? 'completed' : ''}" style="display: flex; align-items: center; gap: 0.75rem; font-size: 0.9rem; cursor: pointer; transition: 0.3s;" onclick="toggleTaskDashboard(${t.id}, this)">
+                    <div class="checkbox ${t.completed ? 'checked' : ''}">
+                        ${t.completed ? '<i class="fas fa-check" style="font-size: 0.6rem;"></i>' : ''}
+                    </div>
+                    <span style="flex-grow: 1;">${t.name}</span>
+                    <i class="fas fa-trash-alt delete-task-btn" onclick="deleteQuickTask(${t.id}, event)" title="Delete Task"></i>
                 </div>
             `).join('');
         } else {
             taskList.innerHTML = '<p style="color: var(--text-muted); font-size: 0.9rem;">Clean desk, clear mind.</p>';
         }
     }
+
+    // Update toggle button text/icon
+    const toggleBtn = document.getElementById('toggle-all-tasks');
+    if (toggleBtn) {
+        toggleBtn.innerHTML = showAllTasks ? '<i class="fas fa-eye-slash"></i> View Pending' : '<i class="fas fa-eye"></i> Show All';
+        toggleBtn.classList.toggle('btn-active', showAllTasks);
+    }
 }
+
+// Global delete for individual tasks
+window.deleteQuickTask = (id, event) => {
+    event.stopPropagation();
+    const tasks = Storage.getTasks();
+    const updatedTasks = tasks.filter(t => t.id !== id);
+    Storage.save(DB_KEYS.TASKS, updatedTasks);
+    updateDashboardStats();
+};
 
 // Global toggle for dashboard with animation
 window.toggleTaskDashboard = (id, element) => {
+    const tasks = Storage.getTasks();
+    const task = tasks.find(t => t.id === id);
+    if (!task) return;
+
     // Add animation classes
     const checkbox = element.querySelector('.checkbox');
-    checkbox.classList.add('checked');
-    checkbox.innerHTML = '<i class="fas fa-check" style="font-size: 0.6rem;"></i>';
     
-    element.classList.add('task-item-exit');
+    if (!task.completed) {
+        checkbox.classList.add('checked');
+        checkbox.innerHTML = '<i class="fas fa-check" style="font-size: 0.6rem;"></i>';
+        
+        if (!showAllTasks) {
+            element.classList.add('task-item-exit');
+        } else {
+            element.classList.add('completed');
+        }
 
-    // Wait for animation to finish before updating storage and UI
-    setTimeout(() => {
-        const tasks = Storage.getTasks();
-        const task = tasks.find(t => t.id === id);
-        if (task) {
+        // Wait for animation to finish before updating storage and UI
+        setTimeout(() => {
             task.completed = true;
             Storage.save(DB_KEYS.TASKS, tasks);
             updateDashboardStats();
-        }
-    }, 400); // Matches animation duration
+        }, 400); // Matches animation duration
+    } else {
+        // Un-complete task if clicked while in "Show All" mode
+        checkbox.classList.remove('checked');
+        checkbox.innerHTML = '';
+        element.classList.remove('completed');
+        
+        setTimeout(() => {
+            task.completed = false;
+            Storage.save(DB_KEYS.TASKS, tasks);
+            updateDashboardStats();
+        }, 400);
+    }
 };
 
 
@@ -131,11 +170,29 @@ function setupEventListeners() {
     const closeBtn = document.getElementById('close-task-modal');
     const saveBtn = document.getElementById('save-quick-task');
     const taskInput = document.getElementById('quick-task-name');
+    const toggleTasksBtn = document.getElementById('toggle-all-tasks');
+    const clearTasksBtn = document.getElementById('clear-all-tasks');
 
     if (openBtn) {
         openBtn.onclick = () => {
             taskModal.style.display = 'flex';
             taskInput.focus();
+        };
+    }
+
+    if (toggleTasksBtn) {
+        toggleTasksBtn.onclick = () => {
+            showAllTasks = !showAllTasks;
+            updateDashboardStats();
+        };
+    }
+
+    if (clearTasksBtn) {
+        clearTasksBtn.onclick = () => {
+            if (confirm('Are you sure you want to clear all tasks?')) {
+                Storage.save(DB_KEYS.TASKS, []);
+                updateDashboardStats();
+            }
         };
     }
 

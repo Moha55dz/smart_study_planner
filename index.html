@@ -113,7 +113,11 @@
             <div class="card">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
                     <h2 style="font-size: 1.1rem; font-weight: 700;">Quick Tasks</h2>
-                    <button class="btn btn-outline" id="open-task-modal" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i class="fas fa-plus"></i> Add</button>
+                    <div style="display: flex; gap: 0.5rem; align-items: center;">
+                        <button class="btn btn-outline" id="clear-all-tasks" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i class="fas fa-trash-alt"></i> Clear All</button>
+                        <button class="btn btn-outline" id="toggle-all-tasks" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i class="fas fa-eye"></i> Show All</button>
+                        <button class="btn btn-outline" id="open-task-modal" style="padding: 0.25rem 0.5rem; font-size: 0.75rem;"><i class="fas fa-plus"></i> Add</button>
+                    </div>
                 </div>
                 <div id="quick-tasks-list" style="display: flex; flex-direction: column; gap: 0.75rem;">
                     <p style="color: var(--text-muted); font-size: 0.9rem;">Clean desk, clear mind.</p>
