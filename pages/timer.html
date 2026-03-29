@@ -3,198 +3,147 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Focus Timer - Smart Study Planner</title>
-    <!-- Google Fonts -->
+    <title>Timer — Smart Study Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&family=Tajawal:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
-    <style>
-        .timer-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 60vh;
-            text-align: center;
-        }
-
-        .timer-display {
-            font-size: 8rem;
-            font-weight: 800;
-            font-variant-numeric: tabular-nums;
-            margin: 2rem 0;
-            color: var(--primary);
-            text-shadow: 0 4px 24px rgba(108, 99, 255, 0.15);
-        }
-
-        .timer-modes {
-            display: flex;
-            gap: 1rem;
-            background: var(--secondary);
-            padding: 0.5rem;
-            border-radius: 100px;
-            margin-bottom: 1rem;
-        }
-
-        .mode-btn {
-            padding: 0.5rem 1.5rem;
-            border-radius: 100px;
-            border: none;
-            background: transparent;
-            font-weight: 600;
-            color: var(--text-muted);
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        .mode-btn.active {
-            background: var(--card);
-            color: var(--primary);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-        }
-
-        .timer-controls {
-            display: flex;
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .btn-circle {
-            width: 64px;
-            height: 64px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-        }
-
-        .session-info {
-            margin-top: 3rem;
-            padding: 1rem 2rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-        }
-    </style>
 </head>
-<body data-theme="light">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>StudyPlanner</span>
-        </div>
-        <nav class="nav-links">
-            <div class="nav-item">
-                <a href="../index.html" class="nav-link">
-                    <i class="fas fa-th-large"></i>
-                    <span>Dashboard</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="subjects.html" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Subjects</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="planner.html" class="nav-link">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Planner</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="timer.html" class="nav-link active">
-                    <i class="fas fa-stopwatch"></i>
-                    <span>Timer</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="progress.html" class="nav-link">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Progress</span>
-                </a>
-            </div>
-        </nav>
-    </aside>
+<body data-page-title-key="docTitleTimer">
+    <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <header class="header">
-            <div class="greeting">
-                <h1>Focus Timer</h1>
-                <p style="color: var(--text-muted);">Master your time with the Pomodoro technique.</p>
+    <div class="app-shell">
+        <aside class="sidebar" id="app-sidebar" data-i18n-aria="ariaMainNav" aria-label="Main navigation">
+            <div class="sidebar__brand">
+                <div class="sidebar__brand-icon" aria-hidden="true"><i class="fas fa-graduation-cap"></i></div>
+                <div class="sidebar__brand-text">
+                    <span class="sidebar__title" data-i18n="brandTitle">Smart Study</span>
+                    <span class="sidebar__subtitle" data-i18n="brandSubtitle">Planner</span>
+                </div>
             </div>
-            <div style="display: flex; align-items: center; gap: 1rem;">
-                 <select id="timer-subject" style="padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); color: var(--text-main);">
-                    <option value="">Select Subject</option>
-                 </select>
-            </div>
-        </header>
+            <nav class="nav-links">
+                <div class="nav-item"><a href="../index.html" class="nav-link"><i class="fas fa-th-large"></i><span data-i18n="navDashboard">Dashboard</span></a></div>
+                <div class="nav-item"><a href="tasks.html" class="nav-link"><i class="fas fa-clipboard-list"></i><span data-i18n="navTasks">Tasks</span></a></div>
+                <div class="nav-item"><a href="subjects.html" class="nav-link"><i class="fas fa-book"></i><span data-i18n="navSubjects">Subjects</span></a></div>
+                <div class="nav-item"><a href="planner.html" class="nav-link"><i class="fas fa-calendar-days"></i><span data-i18n="navPlanner">Planner</span></a></div>
+                <div class="nav-item"><a href="timer.html" class="nav-link active"><i class="fas fa-stopwatch"></i><span data-i18n="navTimer">Timer</span></a></div>
+                <div class="nav-item"><a href="progress.html" class="nav-link"><i class="fas fa-chart-line"></i><span data-i18n="navProgress">Progress</span></a></div>
+            </nav>
+            <div class="sidebar__footer" data-i18n="sidebarFooterTimer">One focused block at a time.</div>
+        </aside>
 
-        <div class="timer-container">
-            <div class="timer-modes">
-                <button class="mode-btn active" data-time="25">Pomodoro</button>
-                <button class="mode-btn" data-time="5">Short Break</button>
-                <button class="mode-btn" data-time="15">Long Break</button>
-            </div>
-
-            <div class="timer-display" id="display">25:00</div>
-
-            <div class="timer-controls">
-                <button class="btn btn-outline btn-circle" id="reset-btn" title="Reset">
-                    <i class="fas fa-redo-alt"></i>
-                </button>
-                <button class="btn btn-primary btn-circle" id="start-btn" style="width: 80px; height: 80px; font-size: 2rem;">
-                    <i class="fas fa-play"></i>
-                </button>
-                <button class="btn btn-outline btn-circle" id="settings-btn" title="Settings">
-                    <i class="fas fa-cog"></i>
-                </button>
-            </div>
-
-            <div class="session-info">
-                <p id="session-count">Sessions completed today: 0</p>
-            </div>
-        </div>
-
-        <!-- Timer Settings Modal -->
-        <div id="settings-modal" style="display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; align-items: center; justify-content: center;">
-            <div class="card" style="width: 100%; max-width: 400px; margin: 1rem;">
-                <h3 style="margin-bottom: 1.5rem;">Timer Settings (Minutes)</h3>
-                
-                <div style="display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; text-align: left;">
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <button type="button" class="topbar__menu" id="sidebar-open" data-i18n-aria="openMenu" aria-label="Open menu"><i class="fas fa-bars"></i></button>
                     <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem;">Pomodoro</label>
-                        <input type="number" id="pref-pomo" value="25" min="1" max="60" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-main);">
+                        <div class="topbar__page-title" data-i18n="topbarTimer">Focus timer</div>
+                        <div class="topbar__page-desc" data-i18n="descTimer">Pomodoro with logged sessions.</div>
                     </div>
-                    <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem;">Short Break</label>
-                        <input type="number" id="pref-short" value="5" min="1" max="30" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-main);">
+                </div>
+                <div class="topbar__right">
+                    <div class="lang-switcher" data-i18n-aria="ariaLanguageSwitcher" role="group">
+                        <button type="button" class="lang-switcher__btn" data-lang="en" aria-pressed="true">EN</button>
+                        <button type="button" class="lang-switcher__btn" data-lang="ar" aria-pressed="false">عربي</button>
                     </div>
+                    <div class="notifications-wrap">
+                        <button type="button" class="notifications-btn" id="notifications-toggle" data-i18n-aria="ariaNotifications" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notifications-badge" id="notifications-badge" data-count="0"></span>
+                        </button>
+                        <div class="notifications-panel" id="notifications-panel" data-i18n-aria="ariaNotificationsList" aria-label="Notifications list">
+                            <div class="notifications-panel__head">
+                                <span data-i18n="notifications">Notifications</span>
+                                <button type="button" class="btn btn-ghost btn-sm" id="notifications-mark-read" data-i18n="markAllRead">Mark all read</button>
+                            </div>
+                            <div class="notifications-panel__list" id="notifications-list"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="theme-toggle" data-i18n-title="ariaToggleTheme" title="Toggle theme"><i class="fas fa-moon"></i></button>
+                    <div class="user-chip">
+                        <div class="user-avatar" aria-hidden="true">S</div>
+                        <div class="user-meta">
+                            <span class="user-meta__name" data-i18n="userName">Student</span>
+                            <span class="user-meta__role" data-i18n="userRole">Learner</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-body page-body--narrow">
+                <header class="page-header" style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;">
                     <div>
-                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600; font-size: 0.9rem;">Long Break</label>
-                        <input type="number" id="pref-long" value="15" min="1" max="60" style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-main);">
+                        <h1 data-i18n="pageTimerH1">Pomodoro</h1>
+                        <p data-i18n="pageTimerDesc">Optional: tag sessions with a subject for progress charts.</p>
+                    </div>
+                    <label class="form-label" style="margin:0;display:flex;align-items:center;gap:0.5rem;">
+                        <span data-i18n="timerSubjectLabel" style="white-space:nowrap;">Subject</span>
+                        <select id="timer-subject" class="input-field" data-i18n-aria="timerSubjectLabel" aria-label="Subject">
+                            <option value="" data-i18n="subjectGeneral">General</option>
+                        </select>
+                    </label>
+                </header>
+
+                <div class="timer-shell">
+                    <div class="timer-modes" role="tablist" aria-label="Timer mode">
+                        <button type="button" class="mode-btn active" data-mode="pomodoro" data-time="25" role="tab" aria-selected="true" data-i18n="timerPomodoro">Pomodoro</button>
+                        <button type="button" class="mode-btn" data-mode="short" data-time="5" role="tab" data-i18n="timerShortBreak">Short break</button>
+                        <button type="button" class="mode-btn" data-mode="long" data-time="15" role="tab" data-i18n="timerLongBreak">Long break</button>
+                    </div>
+
+                    <div class="timer-display" id="display" aria-live="polite">25:00</div>
+
+                    <div class="timer-controls">
+                        <button type="button" class="btn btn-outline btn-circle" id="reset-btn" data-i18n-title="timerResetAria" data-i18n-aria="timerResetAria" title="Reset" aria-label="Reset timer">
+                            <i class="fas fa-rotate-left"></i>
+                        </button>
+                        <button type="button" class="btn btn-primary btn-circle" id="start-btn" style="width:80px;height:80px;font-size:1.75rem;" data-i18n-aria="timerStartAria" data-i18n-title="timerStartAria" aria-label="Start or pause">
+                            <i class="fas fa-play"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline btn-circle" id="settings-btn" data-i18n-title="timerSettingsAria" data-i18n-aria="timerSettingsAria" title="Settings" aria-label="Timer settings">
+                            <i class="fas fa-sliders"></i>
+                        </button>
+                    </div>
+
+                    <div class="session-info">
+                        <p id="session-count"></p>
                     </div>
                 </div>
 
-                <div style="display: flex; gap: 1rem; justify-content: flex-end;">
-                    <button class="btn btn-outline" id="close-settings">Cancel</button>
-                    <button class="btn btn-primary" id="save-settings">Save Settings</button>
+                <div id="settings-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+                    <div class="card modal-card">
+                        <h3 id="settings-title" style="margin-bottom:1.25rem;font-size:1.1rem;" data-i18n="timerSettingsTitle">Timer settings (minutes)</h3>
+                        <div style="display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem;">
+                            <div>
+                                <label class="form-label" for="pref-pomo" data-i18n="timerPomodoro">Pomodoro</label>
+                                <input type="number" id="pref-pomo" class="input-field" value="25" min="1" max="60" style="width:100%;">
+                            </div>
+                            <div>
+                                <label class="form-label" for="pref-short" data-i18n="timerShortBreak">Short break</label>
+                                <input type="number" id="pref-short" class="input-field" value="5" min="1" max="30" style="width:100%;">
+                            </div>
+                            <div>
+                                <label class="form-label" for="pref-long" data-i18n="timerLongBreak">Long break</label>
+                                <input type="number" id="pref-long" class="input-field" value="15" min="1" max="60" style="width:100%;">
+                            </div>
+                        </div>
+                        <div style="display:flex;gap:0.75rem;justify-content:flex-end;">
+                            <button type="button" class="btn btn-outline" id="close-settings" data-i18n="cancel">Cancel</button>
+                            <button type="button" class="btn btn-primary" id="save-settings" data-i18n="timerSave">Save</button>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <script src="../js/storage.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/ui.js"></script>
     <script src="../js/timer.js"></script>
 </body>
 </html>

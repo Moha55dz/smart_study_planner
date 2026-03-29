@@ -3,182 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Weekly Planner - Smart Study Planner</title>
-    <!-- Google Fonts -->
+    <title>Planner — Smart Study Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
-    <style>
-        .planner-container {
-            overflow-x: auto;
-            background: var(--card);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            margin-top: 1rem;
-        }
-
-        .planner-grid {
-            display: grid;
-            grid-template-columns: 80px repeat(7, 1fr);
-            min-width: 800px;
-        }
-
-        .grid-header {
-            background: var(--secondary);
-            padding: 1rem;
-            text-align: center;
-            font-weight: 700;
-            border-bottom: 1px solid var(--border);
-            border-right: 1px solid var(--border);
-        }
-
-        .time-col {
-            background: var(--secondary);
-            padding: 0.5rem;
-            text-align: right;
-            font-size: 0.75rem;
-            font-weight: 600;
-            color: var(--text-muted);
-            border-right: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-        }
-
-        .grid-cell {
-            border-right: 1px solid var(--border);
-            border-bottom: 1px solid var(--border);
-            height: 60px;
-            transition: var(--transition);
-            cursor: pointer;
-            position: relative;
-        }
-
-        .grid-cell:hover {
-            background-color: var(--secondary);
-        }
-
-        .session-block {
-            position: absolute;
-            inset: 2px;
-            border-radius: 4px;
-            padding: 4px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            color: white;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-
-        .subject-selector {
-            position: fixed;
-            inset: 0;
-            background: rgba(0,0,0,0.5);
-            z-index: 2000;
-            display: none;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
 </head>
-<body data-theme="light">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>StudyPlanner</span>
-        </div>
-        <nav class="nav-links">
-            <div class="nav-item">
-                <a href="../index.html" class="nav-link">
-                    <i class="fas fa-th-large"></i>
-                    <span>Dashboard</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="subjects.html" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Subjects</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="planner.html" class="nav-link active">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Planner</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="timer.html" class="nav-link">
-                    <i class="fas fa-stopwatch"></i>
-                    <span>Timer</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="progress.html" class="nav-link">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Progress</span>
-                </a>
-            </div>
-        </nav>
-    </aside>
+<body data-page-title-key="docTitlePlanner">
+    <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <header class="header">
-            <div class="greeting">
-                <h1>Weekly Planner</h1>
-                <p style="color: var(--text-muted);">Schedule your study sessions for the week.</p>
-            </div>
-            <button class="btn btn-outline" onclick="clearPlanner()">
-                <i class="fas fa-eraser"></i> Clear Week
-            </button>
-        </header>
-
-        <div class="planner-container">
-            <div class="planner-grid" id="planner-grid">
-                <!-- Header row -->
-                <div class="grid-header" style="background: var(--card);">Time</div>
-                <div class="grid-header">Mon</div>
-                <div class="grid-header">Tue</div>
-                <div class="grid-header">Wed</div>
-                <div class="grid-header">Thu</div>
-                <div class="grid-header">Fri</div>
-                <div class="grid-header">Sat</div>
-                <div class="grid-header">Sun</div>
-                
-                <!-- Time slots will be injected by JS -->
-            </div>
-        </div>
-
-        <!-- Subject Selection Modal -->
-        <div id="subject-selector" class="subject-selector">
-            <div class="card" style="width: 100%; max-width: 350px;">
-                <h3 style="margin-bottom: 1rem;">Select Subject</h3>
-                <div id="subject-list" style="display: flex; flex-direction: column; gap: 0.5rem; max-height: 300px; overflow-y: auto;">
-                    <!-- Subjects injected here -->
-                </div>
-                <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                    <button class="btn btn-outline" style="flex: 1;" onclick="closeSelector()">Cancel</button>
-                    <button class="btn btn-danger" style="flex: 1;" onclick="removeSession()">Remove</button>
+    <div class="app-shell">
+        <aside class="sidebar" id="app-sidebar" data-i18n-aria="ariaMainNav" aria-label="Main navigation">
+            <div class="sidebar__brand">
+                <div class="sidebar__brand-icon" aria-hidden="true"><i class="fas fa-graduation-cap"></i></div>
+                <div class="sidebar__brand-text">
+                    <span class="sidebar__title" data-i18n="brandTitle">Smart Study</span>
+                    <span class="sidebar__subtitle" data-i18n="brandSubtitle">Planner</span>
                 </div>
             </div>
-        </div>
-    </main>
+            <nav class="nav-links">
+                <div class="nav-item"><a href="../index.html" class="nav-link"><i class="fas fa-th-large"></i><span data-i18n="navDashboard">Dashboard</span></a></div>
+                <div class="nav-item"><a href="tasks.html" class="nav-link"><i class="fas fa-clipboard-list"></i><span data-i18n="navTasks">Tasks</span></a></div>
+                <div class="nav-item"><a href="subjects.html" class="nav-link"><i class="fas fa-book"></i><span data-i18n="navSubjects">Subjects</span></a></div>
+                <div class="nav-item"><a href="planner.html" class="nav-link active"><i class="fas fa-calendar-days"></i><span data-i18n="navPlanner">Planner</span></a></div>
+                <div class="nav-item"><a href="timer.html" class="nav-link"><i class="fas fa-stopwatch"></i><span data-i18n="navTimer">Timer</span></a></div>
+                <div class="nav-item"><a href="progress.html" class="nav-link"><i class="fas fa-chart-line"></i><span data-i18n="navProgress">Progress</span></a></div>
+            </nav>
+            <div class="sidebar__footer" data-i18n="sidebarFooterPlanner">Click a cell to schedule.</div>
+        </aside>
+
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <button type="button" class="topbar__menu" id="sidebar-open" data-i18n-aria="openMenu" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+                    <div>
+                        <div class="topbar__page-title" data-i18n="topbarPlanner">Weekly planner</div>
+                        <div class="topbar__page-desc" data-i18n="descPlanner">Mon–Sun grid, aligned with your week.</div>
+                    </div>
+                </div>
+                <div class="topbar__right">
+                    <div class="lang-switcher" data-i18n-aria="ariaLanguageSwitcher" role="group">
+                        <button type="button" class="lang-switcher__btn" data-lang="en" aria-pressed="true">EN</button>
+                        <button type="button" class="lang-switcher__btn" data-lang="ar" aria-pressed="false">عربي</button>
+                    </div>
+                    <div class="notifications-wrap">
+                        <button type="button" class="notifications-btn" id="notifications-toggle" data-i18n-aria="ariaNotifications" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notifications-badge" id="notifications-badge" data-count="0"></span>
+                        </button>
+                        <div class="notifications-panel" id="notifications-panel" data-i18n-aria="ariaNotificationsList" aria-label="Notifications list">
+                            <div class="notifications-panel__head">
+                                <span data-i18n="notifications">Notifications</span>
+                                <button type="button" class="btn btn-ghost btn-sm" id="notifications-mark-read" data-i18n="markAllRead">Mark all read</button>
+                            </div>
+                            <div class="notifications-panel__list" id="notifications-list"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="theme-toggle" data-i18n-title="ariaToggleTheme" title="Toggle theme"><i class="fas fa-moon"></i></button>
+                    <div class="user-chip">
+                        <div class="user-avatar" aria-hidden="true">S</div>
+                        <div class="user-meta">
+                            <span class="user-meta__name" data-i18n="userName">Student</span>
+                            <span class="user-meta__role" data-i18n="userRole">Learner</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-body page-body--narrow">
+                <header class="page-header" style="display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem;">
+                    <div>
+                        <h1 data-i18n="plannerWeeklyH1">Weekly schedule</h1>
+                        <p data-i18n="pagePlannerDesc">Tap an empty slot to assign a subject. Today’s column is highlighted.</p>
+                    </div>
+                    <button type="button" class="btn btn-outline" id="clear-week-btn"><i class="fas fa-eraser"></i> <span data-i18n="plannerClearWeek">Clear week</span></button>
+                </header>
+
+                <div class="planner-container">
+                    <div class="planner-grid" id="planner-grid" role="grid" data-i18n-aria="plannerGridAria" aria-label="Weekly study schedule">
+                        <div class="grid-header" style="background:var(--card);" data-i18n="plannerTimeCol">Time</div>
+                        <div class="grid-header" data-day-head="0" data-i18n="plannerDayMon">Mon</div>
+                        <div class="grid-header" data-day-head="1" data-i18n="plannerDayTue">Tue</div>
+                        <div class="grid-header" data-day-head="2" data-i18n="plannerDayWed">Wed</div>
+                        <div class="grid-header" data-day-head="3" data-i18n="plannerDayThu">Thu</div>
+                        <div class="grid-header" data-day-head="4" data-i18n="plannerDayFri">Fri</div>
+                        <div class="grid-header" data-day-head="5" data-i18n="plannerDaySat">Sat</div>
+                        <div class="grid-header" data-day-head="6" data-i18n="plannerDaySun">Sun</div>
+                    </div>
+                </div>
+
+                <div id="subject-selector" class="subject-selector" role="dialog" aria-modal="true" aria-labelledby="selector-title">
+                    <div class="card modal-card" style="max-width:380px;width:100%;">
+                        <h3 id="selector-title" style="margin-bottom:1rem;font-size:1.1rem;" data-i18n="plannerSelectSubject">Select subject</h3>
+                        <div id="subject-list" style="display:flex;flex-direction:column;gap:0.5rem;max-height:280px;overflow-y:auto;"></div>
+                        <div style="margin-top:1.25rem;display:flex;gap:0.75rem;">
+                            <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeSelector()" data-i18n="cancel">Cancel</button>
+                            <button type="button" class="btn btn-danger" style="flex:1;" onclick="removeSession()" data-i18n="plannerRemove">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <script src="../js/storage.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/ui.js"></script>
     <script src="../js/planner.js"></script>
 </body>
 </html>

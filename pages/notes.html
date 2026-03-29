@@ -3,102 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Knowledge Notes - Smart Study Planner</title>
-    <!-- Google Fonts -->
+    <title>Notes — Smart Study Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
 </head>
-<body data-theme="light">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>StudyPlanner</span>
-        </div>
-        <nav class="nav-links">
-            <div class="nav-item">
-                 <a href="../index.html" class="nav-link">
-                    <i class="fas fa-th-large"></i>
-                    <span>Dashboard</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="subjects.html" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Subjects</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="planner.html" class="nav-link">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Planner</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="timer.html" class="nav-link">
-                    <i class="fas fa-stopwatch"></i>
-                    <span>Timer</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="progress.html" class="nav-link">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Progress</span>
-                </a>
-            </div>
-        </nav>
-    </aside>
+<body data-page-title-key="docTitleNotes">
+    <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <header class="header">
-            <div class="greeting">
-                <h1>Study Notes</h1>
-                <p style="color: var(--text-muted);">Quick notes for quick recall.</p>
+    <div class="app-shell">
+        <aside class="sidebar" id="app-sidebar" data-i18n-aria="ariaMainNav" aria-label="Main navigation">
+            <div class="sidebar__brand">
+                <div class="sidebar__brand-icon" aria-hidden="true"><i class="fas fa-graduation-cap"></i></div>
+                <div class="sidebar__brand-text">
+                    <span class="sidebar__title" data-i18n="brandTitle">Smart Study</span>
+                    <span class="sidebar__subtitle" data-i18n="brandSubtitle">Planner</span>
+                </div>
             </div>
-            <button class="btn btn-primary" onclick="addNote()">
-                <i class="fas fa-sticky-note"></i> New Note
-            </button>
-        </header>
+            <nav class="nav-links">
+                <div class="nav-item"><a href="../index.html" class="nav-link"><i class="fas fa-th-large"></i><span data-i18n="navDashboard">Dashboard</span></a></div>
+                <div class="nav-item"><a href="tasks.html" class="nav-link"><i class="fas fa-clipboard-list"></i><span data-i18n="navTasks">Tasks</span></a></div>
+                <div class="nav-item"><a href="subjects.html" class="nav-link"><i class="fas fa-book"></i><span data-i18n="navSubjects">Subjects</span></a></div>
+                <div class="nav-item"><a href="planner.html" class="nav-link"><i class="fas fa-calendar-days"></i><span data-i18n="navPlanner">Planner</span></a></div>
+                <div class="nav-item"><a href="timer.html" class="nav-link"><i class="fas fa-stopwatch"></i><span data-i18n="navTimer">Timer</span></a></div>
+                <div class="nav-item"><a href="progress.html" class="nav-link"><i class="fas fa-chart-line"></i><span data-i18n="navProgress">Progress</span></a></div>
+            </nav>
+            <div class="sidebar__footer" data-i18n="sidebarFooterNotes">Notes · scratchpad</div>
+        </aside>
 
-        <div class="grid grid-3" id="notes-grid">
-            <div class="card" style="display: flex; flex-direction: column; gap: 1rem; border-top: 4px solid var(--primary);">
-                <h3 contenteditable="true">Quick Idea</h3>
-                <p contenteditable="true" style="font-size: 0.9rem; color: var(--text-muted); flex-grow: 1;">Click here to edit your note. Great for capturing thoughts during study breaks!</p>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Created: Just now</div>
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <button type="button" class="topbar__menu" id="sidebar-open" data-i18n-aria="openMenu" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+                    <div>
+                        <div class="topbar__page-title" data-i18n="topbarNotes">Study notes</div>
+                        <div class="topbar__page-desc" data-i18n="descNotes">Quick capture while you learn.</div>
+                    </div>
+                </div>
+                <div class="topbar__right">
+                    <div class="lang-switcher" data-i18n-aria="ariaLanguageSwitcher" role="group">
+                        <button type="button" class="lang-switcher__btn" data-lang="en" aria-pressed="true">EN</button>
+                        <button type="button" class="lang-switcher__btn" data-lang="ar" aria-pressed="false">عربي</button>
+                    </div>
+                    <div class="notifications-wrap">
+                        <button type="button" class="notifications-btn" id="notifications-toggle" data-i18n-aria="ariaNotifications" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notifications-badge" id="notifications-badge" data-count="0"></span>
+                        </button>
+                        <div class="notifications-panel" id="notifications-panel" data-i18n-aria="ariaNotificationsList" aria-label="Notifications list">
+                            <div class="notifications-panel__head">
+                                <span data-i18n="notifications">Notifications</span>
+                                <button type="button" class="btn btn-ghost btn-sm" id="notifications-mark-read" data-i18n="markAllRead">Mark all read</button>
+                            </div>
+                            <div class="notifications-panel__list" id="notifications-list"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="theme-toggle" data-i18n-title="ariaToggleTheme" title="Toggle theme"><i class="fas fa-moon"></i></button>
+                    <div class="user-chip">
+                        <div class="user-avatar" aria-hidden="true">S</div>
+                        <div class="user-meta">
+                            <span class="user-meta__name" data-i18n="userName">Student</span>
+                            <span class="user-meta__role" data-i18n="userRole">Learner</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <div class="page-body page-body--narrow">
+                <header class="page-header" style="display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;">
+                    <div>
+                        <h1 data-i18n="pageNotesH1">Notes</h1>
+                        <p data-i18n="pageNotesDesc">Lightweight cards — edit inline. Not persisted (browser session only).</p>
+                    </div>
+                    <button type="button" class="btn btn-primary" id="add-note-btn"><i class="fas fa-note-sticky"></i> <span data-i18n="notesNewNote">New note</span></button>
+                </header>
+
+                <div class="grid grid-3" id="notes-grid">
+                    <div class="card card--flat" style="display:flex;flex-direction:column;gap:1rem;border-top:4px solid var(--primary);min-height:200px;">
+                        <h3 contenteditable="true" style="font-size:1.05rem;outline:none;" data-i18n="notesSampleTitle">Quick idea</h3>
+                        <p contenteditable="true" style="font-size:0.9rem;color:var(--text-muted);flex-grow:1;outline:none;" data-i18n="notesSampleBody">Click to edit. Jot formulas, links, or reminders between sessions.</p>
+                        <div style="font-size:0.75rem;color:var(--text-muted);"><i class="fas fa-clock"></i> <span data-i18n="notesJustNow">Just now</span></div>
+                    </div>
+                </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
+    <script src="../js/storage.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/ui.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-             // Apply theme
-            const savedTheme = localStorage.getItem('ssp_theme') || 'light';
-            document.body.setAttribute('data-theme', savedTheme);
+        function tr(key, vars) {
+            return typeof window.t === "function" ? window.t(key, vars) : key;
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("add-note-btn").addEventListener("click", addNote);
         });
 
         function addNote() {
-            const grid = document.getElementById('notes-grid');
-            const note = document.createElement('div');
-            note.className = 'card';
-            note.style.display = 'flex';
-            note.style.flexDirection = 'column';
-            note.style.gap = '1rem';
-            note.style.borderTop = '4px solid #22C997';
+            const grid = document.getElementById("notes-grid");
+            const note = document.createElement("div");
+            note.className = "card card--flat";
+            note.style.cssText = "display:flex;flex-direction:column;gap:1rem;border-top:4px solid #10b981;min-height:200px;";
             note.innerHTML = `
-                <h3 contenteditable="true">New Note</h3>
-                <p contenteditable="true" style="font-size: 0.9rem; color: var(--text-muted); flex-grow: 1;">Start typing...</p>
-                <div style="font-size: 0.75rem; color: var(--text-muted);">Created: ${new Date().toLocaleDateString()}</div>
-            `;
+                <h3 contenteditable="true" style="font-size:1.05rem;outline:none;">${escapeHtml(tr("notesNewNote"))}</h3>
+                <p contenteditable="true" style="font-size:0.9rem;color:var(--text-muted);flex-grow:1;outline:none;">…</p>
+                <div style="font-size:0.75rem;color:var(--text-muted);"><i class="fas fa-clock"></i> ${new Date().toLocaleString()}</div>`;
             grid.prepend(note);
+            if (window.SSP) SSP.showToast("success", tr("toastNoteAdded"), tr("toastNoteAddedBody"));
+        }
+
+        function escapeHtml(s) {
+            const d = document.createElement("div");
+            d.textContent = s;
+            return d.innerHTML;
         }
     </script>
 </body>

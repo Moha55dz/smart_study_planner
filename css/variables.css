@@ -1,43 +1,100 @@
+/**
+ * Design tokens — Smart Study Planner
+ * Light/dark themes, spacing, glass, and motion (≈0.3s).
+ */
+
 :root {
-  /* Colors */
-  --primary:    #6C63FF;   /* Purple accent */
-  --secondary:  #F0EFFE;   /* Light purple bg */
-  --success:    #22C997;
-  --warning:    #F59E0B;
-  --danger:     #EF4444;
-  --text-main:  #1E1B4B;
-  --text-muted: #6B7280;
-  --bg:         #F8F7FF;
-  --card:       #FFFFFF;
-  --border:     #E5E7EB;
-  
-  /* UI Atoms */
-  --radius:     12px;
-  --radius-lg:  20px;
-  --shadow:     0 2px 12px rgba(108,99,255,0.08);
-  --shadow-lg:  0 10px 25px rgba(108,99,255,0.12);
-  
-  /* Sidebar */
-  --sidebar-width: 260px;
-  
-  /* Transitions */
-  --transition: all 0.25s cubic-bezier(0.19, 1, 0.22, 1);
+  /* Primary palette — soft purple-blue */
+  --primary: #6366f1;
+  --primary-hover: #4f46e5;
+  --primary-soft: rgba(99, 102, 241, 0.12);
+  --primary-glow: rgba(99, 102, 241, 0.35);
+
+  --secondary: #eef2ff;
+  --success: #10b981;
+  --success-soft: rgba(16, 185, 129, 0.12);
+  --warning: #f59e0b;
+  --warning-soft: rgba(245, 158, 11, 0.14);
+  --danger: #ef4444;
+  --danger-soft: rgba(239, 68, 68, 0.12);
+
+  --text-main: #1e1b4b;
+  --text-muted: #64748b;
+  --text-inverse: #f8fafc;
+
+  --bg: #f4f6fd;
+  --bg-elevated: #ffffff;
+  --card: rgba(255, 255, 255, 0.72);
+  --border: rgba(148, 163, 184, 0.35);
+
+  /* Glass / depth */
+  --glass-bg: rgba(255, 255, 255, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.65);
+  --glass-blur: 16px;
+  --shadow-sm: 0 1px 2px rgba(30, 27, 75, 0.06);
+  --shadow: 0 4px 24px rgba(30, 27, 75, 0.08);
+  --shadow-lg: 0 12px 40px rgba(30, 27, 75, 0.12);
+  --shadow-hover: 0 8px 32px rgba(99, 102, 241, 0.18);
+
+  /* Layout */
+  --sidebar-width: 272px;
+  --topbar-height: 64px;
+  --content-max: 1280px;
+
+  /* Radius */
+  --radius-sm: 8px;
+  --radius: 12px;
+  --radius-lg: 18px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+
+  /* Spacing scale */
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+
+  /* Motion */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --transition-fast: 0.2s var(--ease-out);
+  --transition: 0.3s var(--ease-out);
+
+  /* Task status */
+  --status-done: var(--success);
+  --status-pending: var(--primary);
+  --status-overdue: var(--danger);
 }
 
 [data-theme="dark"] {
-  --bg:        #0F0E1A;
-  --card:      #1A1830;
-  --border:    #2D2B4E;
-  --text-main: #E0DEFF;
-  --text-muted: #94A3B8;
-  --secondary: #252245;
-  --shadow:    0 4px 15px rgba(0,0,0,0.3);
+  --text-main: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-inverse: #0f172a;
+
+  --bg: #0c0a18;
+  --bg-elevated: #15122a;
+  --card: rgba(21, 18, 42, 0.75);
+  --border: rgba(148, 163, 184, 0.12);
+
+  --secondary: rgba(99, 102, 241, 0.15);
+  --glass-bg: rgba(21, 18, 42, 0.65);
+  --glass-border: rgba(255, 255, 255, 0.06);
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.35);
+  --shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+  --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.55);
+  --shadow-hover: 0 12px 40px rgba(99, 102, 241, 0.25);
+
+  --primary-soft: rgba(129, 140, 248, 0.18);
 }
 
-/* Animations for View Transitions if supported */
+/* View transitions (when supported) */
 ::view-transition-group(*),
 ::view-transition-old(*),
 ::view-transition-new(*) {
-  animation-duration: 0.25s;
-  animation-timing-function: cubic-bezier(0.19, 1, 0.22, 1);
+  animation-duration: 0.3s;
+  animation-timing-function: var(--ease-out);
 }

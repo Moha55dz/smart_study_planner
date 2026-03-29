@@ -3,179 +3,212 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tasks - Smart Study Planner</title>
-    <!-- Google Fonts -->
+    <title>Tasks — Smart Study Planner</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Font Awesome -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Tajawal:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Stylesheets -->
     <link rel="stylesheet" href="../css/reset.css">
     <link rel="stylesheet" href="../css/variables.css">
     <link rel="stylesheet" href="../css/layout.css">
     <link rel="stylesheet" href="../css/components.css">
-    <style>
-        .task-item {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius);
-            margin-bottom: 0.75rem;
-            transition: var(--transition);
-        }
-
-        .task-item:hover {
-            transform: translateX(4px);
-            border-color: var(--primary);
-        }
-
-        .task-item.completed {
-            opacity: 0.6;
-        }
-
-        .task-item.completed label {
-            text-decoration: line-through;
-            color: var(--text-muted);
-        }
-
-        .task-input-bar {
-            display: flex;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            background: var(--card);
-            padding: 1rem;
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border);
-            box-shadow: var(--shadow);
-        }
-    </style>
 </head>
-<body data-theme="light">
-    <!-- Sidebar -->
-    <aside class="sidebar">
-        <div class="logo">
-            <i class="fas fa-graduation-cap"></i>
-            <span>StudyPlanner</span>
-        </div>
-        <nav class="nav-links">
-            <div class="nav-item">
-                 <a href="../index.html" class="nav-link">
-                    <i class="fas fa-th-large"></i>
-                    <span>Dashboard</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="subjects.html" class="nav-link">
-                    <i class="fas fa-book"></i>
-                    <span>Subjects</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="planner.html" class="nav-link">
-                    <i class="fas fa-calendar-alt"></i>
-                    <span>Planner</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="timer.html" class="nav-link">
-                    <i class="fas fa-stopwatch"></i>
-                    <span>Timer</span>
-                </a>
-            </div>
-            <div class="nav-item">
-                <a href="progress.html" class="nav-link">
-                    <i class="fas fa-chart-line"></i>
-                    <span>Progress</span>
-                </a>
-            </div>
-        </nav>
-    </aside>
+<body data-page-title-key="docTitleTasks">
+    <div class="sidebar-backdrop" id="sidebar-backdrop" aria-hidden="true"></div>
 
-    <!-- Main Content -->
-    <main class="main-content">
-        <header class="header">
-            <div class="greeting">
-                <h1>Task Management</h1>
-                <p style="color: var(--text-muted);">Stay on top of your assignments and to-dos.</p>
+    <div class="app-shell">
+        <aside class="sidebar" id="app-sidebar" data-i18n-aria="ariaMainNav" aria-label="Main navigation">
+            <div class="sidebar__brand">
+                <div class="sidebar__brand-icon" aria-hidden="true"><i class="fas fa-graduation-cap"></i></div>
+                <div class="sidebar__brand-text">
+                    <span class="sidebar__title" data-i18n="brandTitle">Smart Study</span>
+                    <span class="sidebar__subtitle" data-i18n="brandSubtitle">Planner</span>
+                </div>
             </div>
-        </header>
+            <nav class="nav-links">
+                <div class="nav-item"><a href="../index.html" class="nav-link"><i class="fas fa-th-large"></i><span data-i18n="navDashboard">Dashboard</span></a></div>
+                <div class="nav-item"><a href="tasks.html" class="nav-link active"><i class="fas fa-clipboard-list"></i><span data-i18n="navTasks">Tasks</span></a></div>
+                <div class="nav-item"><a href="subjects.html" class="nav-link"><i class="fas fa-book"></i><span data-i18n="navSubjects">Subjects</span></a></div>
+                <div class="nav-item"><a href="planner.html" class="nav-link"><i class="fas fa-calendar-days"></i><span data-i18n="navPlanner">Planner</span></a></div>
+                <div class="nav-item"><a href="timer.html" class="nav-link"><i class="fas fa-stopwatch"></i><span data-i18n="navTimer">Timer</span></a></div>
+                <div class="nav-item"><a href="progress.html" class="nav-link"><i class="fas fa-chart-line"></i><span data-i18n="navProgress">Progress</span></a></div>
+            </nav>
+            <div class="sidebar__footer" data-i18n="sidebarFooterTasks">Tasks keep priorities visible.</div>
+        </aside>
 
-        <div class="task-input-bar">
-            <input type="text" id="task-name" placeholder="What needs to be done?" style="flex: 1; border: none; background: transparent; font-size: 1rem; outline: none; color: var(--text-main);">
-            <select id="task-subject" style="padding: 0.5rem; border: 1px solid var(--border); border-radius: var(--radius); background: var(--bg); color: var(--text-main); font-size: 0.8rem;">
-                <option value="">General</option>
-            </select>
-            <button class="btn btn-primary" id="add-task-btn">Add Task</button>
-        </div>
+        <main class="main-content">
+            <header class="topbar">
+                <div class="topbar__left">
+                    <button type="button" class="topbar__menu" id="sidebar-open" data-i18n-aria="openMenu" aria-label="Open menu"><i class="fas fa-bars"></i></button>
+                    <div>
+                        <div class="topbar__page-title" data-i18n="topbarTasks">Tasks</div>
+                        <div class="topbar__page-desc" data-i18n="descTasks">Assignments and to-dos in one place.</div>
+                    </div>
+                </div>
+                <div class="topbar__right">
+                    <div class="lang-switcher" data-i18n-aria="ariaLanguageSwitcher" role="group">
+                        <button type="button" class="lang-switcher__btn" data-lang="en" aria-pressed="true">EN</button>
+                        <button type="button" class="lang-switcher__btn" data-lang="ar" aria-pressed="false">عربي</button>
+                    </div>
+                    <div class="notifications-wrap">
+                        <button type="button" class="notifications-btn" id="notifications-toggle" data-i18n-aria="ariaNotifications" aria-label="Notifications">
+                            <i class="fas fa-bell"></i>
+                            <span class="notifications-badge" id="notifications-badge" data-count="0"></span>
+                        </button>
+                        <div class="notifications-panel" id="notifications-panel" data-i18n-aria="ariaNotificationsList" aria-label="Notifications list">
+                            <div class="notifications-panel__head">
+                                <span data-i18n="notifications">Notifications</span>
+                                <button type="button" class="btn btn-ghost btn-sm" id="notifications-mark-read" data-i18n="markAllRead">Mark all read</button>
+                            </div>
+                            <div class="notifications-panel__list" id="notifications-list"></div>
+                        </div>
+                    </div>
+                    <button type="button" class="theme-toggle" data-i18n-title="ariaToggleTheme" title="Toggle theme"><i class="fas fa-moon"></i></button>
+                    <div class="user-chip">
+                        <div class="user-avatar" aria-hidden="true">S</div>
+                        <div class="user-meta">
+                            <span class="user-meta__name" data-i18n="userName">Student</span>
+                            <span class="user-meta__role" data-i18n="userRole">Learner</span>
+                        </div>
+                    </div>
+                </div>
+            </header>
 
-        <div id="tasks-list">
-            <!-- Tasks injected here -->
-        </div>
-    </main>
+            <div class="page-body page-body--narrow">
+                <header class="page-header">
+                    <h1 data-i18n="pageTasksH1">Task management</h1>
+                    <p data-i18n="pageTasksDesc">Capture work, set optional due dates, and track status at a glance.</p>
+                </header>
+
+                <div class="task-input-bar">
+                    <input type="text" id="task-name" data-i18n-placeholder="taskNamePlaceholder" data-i18n-aria="taskNameAria" aria-label="Task name" placeholder="What needs to be done?">
+                    <select id="task-subject" class="input-field" data-i18n-aria="subjectAria" aria-label="Subject">
+                        <option value="" data-i18n="subjectGeneral">General</option>
+                    </select>
+                    <input type="date" id="task-due" class="input-field" data-i18n-title="dueDateTitle" data-i18n-aria="dueDateAria" title="Due date (optional)" aria-label="Due date optional">
+                    <button type="button" class="btn btn-primary" id="add-task-btn"><i class="fas fa-plus"></i> <span data-i18n="addTaskBtn">Add task</span></button>
+                </div>
+
+                <div id="tasks-list" aria-live="polite"></div>
+            </div>
+        </main>
+    </div>
 
     <script src="../js/storage.js"></script>
+    <script src="../js/i18n.js"></script>
+    <script src="../js/ui.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-             // Apply theme
-            const savedTheme = localStorage.getItem('ssp_theme') || 'light';
-            document.body.setAttribute('data-theme', savedTheme);
+        function tr(key, vars) {
+            return typeof window.t === "function" ? window.t(key, vars) : key;
+        }
 
+        function taskStatus(task) {
+            if (task.completed) return "done";
+            if (task.dueDate) {
+                const d = new Date(task.dueDate);
+                const t = new Date();
+                d.setHours(0, 0, 0, 0);
+                t.setHours(0, 0, 0, 0);
+                if (d < t) return "overdue";
+            }
+            return "pending";
+        }
+
+        function statusBadge(status) {
+            if (status === "done") return '<span class="badge badge-success"><i class="fas fa-check"></i> ' + escapeHtml(tr("statusDone")) + "</span>";
+            if (status === "overdue") return '<span class="badge badge-danger"><i class="fas fa-clock"></i> ' + escapeHtml(tr("statusOverdue")) + "</span>";
+            return '<span class="badge badge-purple"><i class="fas fa-circle"></i> ' + escapeHtml(tr("statusPending")) + "</span>";
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
             loadSubjects();
             renderTasks();
-
-            document.getElementById('add-task-btn').onclick = () => {
-                const name = document.getElementById('task-name').value;
-                const subjectId = document.getElementById('task-subject').value;
-                if (!name) return;
-
-                Storage.addTask({ name, subjectId });
-                document.getElementById('task-name').value = '';
+            document.getElementById("add-task-btn").onclick = () => {
+                const name = document.getElementById("task-name").value.trim();
+                const subjectId = document.getElementById("task-subject").value;
+                const dueRaw = document.getElementById("task-due").value;
+                if (!name) {
+                    SSP.showToast("error", tr("toastNeedTaskName"), tr("toastNeedTaskNameBody"));
+                    return;
+                }
+                const payload = { name, subjectId: subjectId || undefined };
+                if (dueRaw) payload.dueDate = dueRaw;
+                Storage.addTask(payload);
+                document.getElementById("task-name").value = "";
+                document.getElementById("task-due").value = "";
+                SSP.showToast("success", tr("toastTaskAdded"), name);
+                SSP.addNotification(tr("toastTaskCreated", { name }), "fa-plus");
                 renderTasks();
             };
         });
 
+        document.addEventListener("ssp-lang-change", () => {
+            loadSubjects();
+            renderTasks();
+        });
+
         function loadSubjects() {
             const subjects = Storage.getSubjects();
-            const select = document.getElementById('task-subject');
-            select.innerHTML += subjects.map(s => `<option value="${s.id}">${s.name}</option>`).join('');
+            const select = document.getElementById("task-subject");
+            const gen = tr("subjectGeneral");
+            select.innerHTML = '<option value="">' + escapeHtml(gen) + "</option>" + subjects.map((s) => `<option value="${s.id}">${escapeHtml(s.name)}</option>`).join("");
+        }
+
+        function escapeHtml(s) {
+            const d = document.createElement("div");
+            d.textContent = s;
+            return d.innerHTML;
         }
 
         function renderTasks() {
             const tasks = Storage.getTasks();
-            const container = document.getElementById('tasks-list');
+            const container = document.getElementById("tasks-list");
             const subjects = Storage.getSubjects();
 
             if (tasks.length === 0) {
-                container.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 3rem;">All clear! Time to relax or start a new task.</p>';
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state__icon"><i class="fas fa-clipboard-list"></i></div>
+                        <h3>${escapeHtml(tr("tasksEmptyTitle"))}</h3>
+                        <p>${escapeHtml(tr("tasksEmptyDesc"))}</p>
+                    </div>`;
                 return;
             }
 
-            container.innerHTML = tasks.slice().reverse().map(t => {
-                const sub = subjects.find(s => s.id == t.subjectId);
-                return `
-                    <div class="task-item ${t.completed ? 'completed' : ''}">
-                        <div class="checkbox ${t.completed ? 'checked' : ''}" onclick="toggleTask(${t.id})">
-                            ${t.completed ? '<i class="fas fa-check"></i>' : ''}
-                        </div>
-                        <div style="flex: 1;">
-                            <label style="font-weight: 600; cursor: pointer;" onclick="toggleTask(${t.id})">${t.name}</label>
-                            ${sub ? `<span style="font-size: 0.7rem; color: ${sub.color}; background: ${sub.color}15; padding: 2px 8px; border-radius: 100px; margin-left: 0.75rem;">${sub.name}</span>` : ''}
-                        </div>
-                        <button onclick="deleteTask(${t.id})" style="background: none; border: none; color: var(--text-muted); cursor: pointer; transition: 0.2s;">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                `;
-            }).join('');
+            container.innerHTML = tasks
+                .slice()
+                .reverse()
+                .map((t) => {
+                    const sub = subjects.find((s) => s.id == t.subjectId);
+                    const st = taskStatus(t);
+                    const cardClass =
+                        "task-card " +
+                        (t.completed ? "task-card--completed task-card--done" : st === "overdue" ? "task-card--overdue task-card--pending" : "task-card--pending");
+                    const dueLine = t.dueDate
+                        ? `<span style="font-size:0.75rem;color:var(--text-muted);"><i class="fas fa-calendar-day"></i> ${escapeHtml(t.dueDate)}</span>`
+                        : "";
+                    return `
+                        <div class="${cardClass}">
+                            <div class="checkbox ${t.completed ? "checked" : ""}" role="button" tabindex="0" aria-label="${escapeHtml(tr("statusDone"))}" onclick="toggleTask(${t.id})">
+                                ${t.completed ? '<i class="fas fa-check" style="font-size:0.65rem;"></i>' : ""}
+                            </div>
+                            <div>
+                                <div class="task-card__title" onclick="toggleTask(${t.id})">${escapeHtml(t.name)}</div>
+                                <div class="task-card__meta">
+                                    ${sub ? `<span class="badge" style="background:${sub.color}18;color:${sub.color};border:1px solid ${sub.color}40;">${escapeHtml(sub.name)}</span>` : ""}
+                                    ${statusBadge(st)}
+                                    ${dueLine}
+                                </div>
+                            </div>
+                            <button type="button" class="btn btn-ghost btn-icon" onclick="deleteTask(${t.id})" aria-label="${escapeHtml(tr("delete"))}"><i class="fas fa-trash-can"></i></button>
+                        </div>`;
+                })
+                .join("");
         }
 
         window.toggleTask = (id) => {
             const tasks = Storage.getTasks();
-            const task = tasks.find(t => t.id === id);
+            const task = tasks.find((t) => t.id === id);
             if (task) {
                 task.completed = !task.completed;
                 Storage.save(DB_KEYS.TASKS, tasks);
@@ -183,9 +216,18 @@
             }
         };
 
-        window.deleteTask = (id) => {
-            const tasks = Storage.getTasks().filter(t => t.id !== id);
-            Storage.save(DB_KEYS.TASKS, tasks);
+        window.deleteTask = async (id) => {
+            const ok = await SSP.showConfirm({
+                title: tr("deleteTaskConfirmTitle"),
+                message: tr("deleteTaskConfirmMsg"),
+                confirmText: tr("delete"),
+                cancelText: tr("cancel"),
+            });
+            if (!ok) return;
+            const next = Storage.getTasks().filter((t) => t.id !== id);
+            Storage.save(DB_KEYS.TASKS, next);
+            SSP.showToast("success", tr("toastTaskRemoved"), "");
+            SSP.addNotification(tr("notifTaskDeleted2"), "fa-trash-can");
             renderTasks();
         };
     </script>
