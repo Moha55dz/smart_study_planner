@@ -336,8 +336,8 @@ body {
 }
 
 [dir="rtl"] .notifications-panel {
-  right: 0;
-  left: auto;
+  left: 0;
+  right: auto;
 }
 
 [dir="rtl"] .toast-container {
